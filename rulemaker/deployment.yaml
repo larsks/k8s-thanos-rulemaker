@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rulemaker
+spec:
+  template:
+    spec:
+      serviceAccountName: rulemaker
+      volumes:
+      - name: rulemaker-scripts
+        configMap:
+          name: rulemaker-scripts
+      containers:
+      - name: rulemaker
+        image: localhost/rulemaker:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: rulemaker-scripts
+          mountPath: /scripts
+        command:
+        - bash
+        - /scripts/watcher.sh

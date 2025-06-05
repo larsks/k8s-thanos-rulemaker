@@ -1,0 +1,14 @@
+FROM registry.access.redhat.com/ubi9/ubi
+
+# Install openshift clients
+RUN cd /tmp && curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz && \
+  tar -C /usr/bin -xf openshift-client-linux.tar.gz oc kubectl && \
+  rm -f openshift-client-linux.tar.gz && \
+  oc --help > /dev/null
+
+# Install yq
+RUN cd /tmp && curl -LO https://github.com/mikefarah/yq/releases/download/v4.45.4/yq_linux_amd64.tar.gz && \
+  tar --wildcards -C /usr/local/bin -xf yq_linux_amd64.tar.gz */yq_linux_amd64 && \
+  mv /usr/local/bin/yq_linux_amd64 /usr/local/bin/yq && \
+  rm yq_linux_amd64.tar.gz && \
+  yq --help > /dev/null
